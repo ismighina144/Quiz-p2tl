@@ -1,515 +1,366 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kuis P2TL & Dinas Jaga Kapal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis P2TL</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            background: linear-gradient(180deg, #0b2a4a 0%, #1a5276 30%, #2e86c1 60%, #85c1e9 85%, #d4e6f1 100%);
-            position: relative;
-            overflow-x: hidden;
+            background: linear-gradient(180deg, #0b2a4a, #1a5276, #2e86c1, #85c1e9);
         }
-
-        body::before {
-            content: "⛵";
-            font-size: 120px;
-            position: fixed;
-            bottom: 20px;
-            left: 5%;
-            opacity: 0.15;
-            transform: rotate(-5deg);
-            animation: floatShip 8s ease-in-out infinite alternate;
-        }
-
-        body::after {
-            content: "⚓";
-            font-size: 80px;
-            position: fixed;
-            bottom: 40px;
-            right: 8%;
-            opacity: 0.12;
-            animation: floatShip 6s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes floatShip {
-            0% { transform: translateY(0px) rotate(-5deg); }
-            100% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        .wave-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        .container {
+            max-width: 850px;
             width: 100%;
-            height: 60px;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: -50%;
-            width: 200%;
-            height: 100%;
-            background: repeating-linear-gradient(90deg,
-                    transparent,
-                    transparent 40px,
-                    rgba(255, 255, 255, 0.05) 40px,
-                    rgba(255, 255, 255, 0.05) 80px);
-            border-radius: 100% 100% 0 0 / 30% 30% 0 0;
-            animation: waveMove 10s linear infinite;
-        }
-
-        .wave:nth-child(2) {
-            animation-duration: 14s;
-            opacity: 0.5;
-            height: 40px;
-            bottom: -10px;
-        }
-
-        @keyframes waveMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(50%); }
-        }
-
-        .quiz-container {
-            max-width: 900px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(10px);
-            border-radius: 28px;
-            padding: 30px 35px 40px;
-            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.6), 0 0 0 2px rgba(255, 255, 255, 0.2) inset;
-            position: relative;
-            z-index: 10;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             max-height: 98vh;
             overflow-y: auto;
         }
-
-        .quiz-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .quiz-container::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.05);
-            border-radius: 10px;
-        }
-        .quiz-container::-webkit-scrollbar-thumb {
-            background: #1a5276;
-            border-radius: 10px;
-        }
-
-        .header {
+        h1 {
             text-align: center;
-            border-bottom: 3px solid #1a5276;
-            padding-bottom: 18px;
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 28px;
             color: #0b2a4a;
-            letter-spacing: 1px;
-            font-weight: 700;
+            border-bottom: 3px solid #1a5276;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
-
-        .header h1 span {
-            color: #c0392b;
-            font-weight: 800;
-        }
-
-        .header .subtitle {
+        h1 span { color: #c0392b; }
+        .sub {
+            text-align: center;
             font-size: 14px;
             color: #2c3e50;
-            margin-top: 5px;
-            font-weight: 500;
-            letter-spacing: 2px;
+            margin-bottom: 15px;
         }
-
-        .header .badge {
-            display: inline-block;
-            background: #1a5276;
-            color: white;
-            padding: 4px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            margin-top: 8px;
-            font-weight: 600;
-        }
-
-        .progress-stats {
+        .progress {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #eaf2f8;
+            padding: 10px 18px;
+            border-radius: 12px;
+            margin-bottom: 18px;
             flex-wrap: wrap;
-            gap: 12px;
-            background: rgba(26, 82, 118, 0.08);
-            padding: 12px 18px;
-            border-radius: 16px;
-            margin-bottom: 22px;
-            border: 1px solid rgba(26, 82, 118, 0.15);
+            gap: 10px;
         }
-
-        .progress-stats .info {
-            font-size: 14px;
-            font-weight: 600;
-            color: #1a3a5a;
-        }
-
-        .progress-stats .info span {
-            color: #c0392b;
-        }
-
-        .progress-bar-bg {
+        .progress .info { font-weight: 600; color: #1a3a5a; }
+        .bar {
             flex: 1;
-            min-width: 100px;
             height: 8px;
             background: #d5dbdb;
             border-radius: 10px;
-            overflow: hidden;
+            min-width: 80px;
         }
-
-        .progress-bar-fill {
+        .bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #1a5276, #2e86c1);
+            background: #1a5276;
             border-radius: 10px;
-            transition: width 0.4s ease;
+            transition: 0.3s;
         }
-
         .btn-reset {
             background: #e74c3c;
             color: white;
             border: none;
-            padding: 7px 18px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 13px;
+            padding: 6px 16px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-weight: 600;
         }
-
-        .btn-reset:hover {
-            background: #c0392b;
-            transform: scale(1.03);
-        }
-
-        .soal-wrapper {
-            margin-bottom: 12px;
-            padding: 18px 20px;
-            border-radius: 16px;
+        .btn-reset:hover { background: #c0392b; }
+        .soal {
             background: white;
+            padding: 16px 18px;
+            border-radius: 14px;
             border-left: 5px solid #2e86c1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: 0.2s;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-
-        .soal-wrapper:hover {
-            box-shadow: 0 4px 14px rgba(0,0,0,0.07);
-        }
-
-        .soal-wrapper.answered-correct {
-            border-left-color: #27ae60;
-            background: #f0faf4;
-        }
-
-        .soal-wrapper.answered-wrong {
-            border-left-color: #e74c3c;
-            background: #fdf0ef;
-        }
-
-        .soal-number {
-            font-weight: 700;
-            color: #1a5276;
-            font-size: 15px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .soal-number .status-icon {
-            font-size: 18px;
-        }
-
-        .soal-text {
-            font-size: 16px;
-            font-weight: 500;
-            color: #1c2e3f;
-            margin-bottom: 12px;
-            line-height: 1.5;
-        }
-
-        .options {
+        .soal.benar { border-left-color: #27ae60; background: #f0faf4; }
+        .soal.salah { border-left-color: #e74c3c; background: #fdf0ef; }
+        .no-soal { font-weight: 700; color: #1a5276; margin-bottom: 4px; }
+        .teks { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+        .opsi {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            padding-left: 6px;
+            gap: 4px;
         }
-
-        .options label {
+        .opsi label {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 8px 14px;
-            border-radius: 10px;
+            gap: 10px;
+            padding: 6px 12px;
+            border-radius: 8px;
             background: #f8f9fa;
             border: 1.5px solid #e9ecef;
             cursor: pointer;
-            transition: 0.15s;
-            font-size: 15px;
-            font-weight: 500;
-            color: #1e2f3f;
+            font-size: 14px;
         }
-
-        .options label:hover {
-            background: #eaf2f8;
-            border-color: #85c1e9;
-        }
-
-        .options input[type="radio"] {
-            width: 18px;
-            height: 18px;
+        .opsi label:hover { background: #eaf2f8; }
+        .opsi input[type="radio"] {
+            width: 16px;
+            height: 16px;
             accent-color: #1a5276;
-            cursor: pointer;
-            flex-shrink: 0;
         }
-
-        .options label.disabled {
-            opacity: 0.75;
-            cursor: default;
-        }
-
-        .options label.disabled:hover {
-            background: #f8f9fa;
-            border-color: #e9ecef;
-        }
-
-        .options label.correct-answer {
-            background: #d5f5e3;
-            border-color: #27ae60;
-        }
-
-        .options label.wrong-answer {
-            background: #fadbd8;
-            border-color: #e74c3c;
-        }
-
+        .opsi label.benar { background: #d5f5e3; border-color: #27ae60; }
+        .opsi label.salah { background: #fadbd8; border-color: #e74c3c; }
+        .opsi label.disabled { opacity: 0.7; cursor: default; }
         .btn-submit {
-            display: block;
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #1a5276, #2e86c1);
+            background: #1a5276;
             color: white;
             border: none;
             border-radius: 30px;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.25s;
-            margin-top: 18px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(26, 82, 118, 0.3);
+            margin-top: 15px;
         }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(26, 82, 118, 0.4);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .result-box {
+        .btn-submit:hover { background: #154360; }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+        .hasil {
             text-align: center;
-            padding: 30px 20px 20px;
-            background: linear-gradient(135deg, #f0f9ff, #e8f4fd);
-            border-radius: 20px;
+            padding: 25px;
+            background: #eaf2f8;
+            border-radius: 16px;
             margin-top: 15px;
             border: 2px solid #1a5276;
         }
-
-        .result-box .score {
-            font-size: 52px;
-            font-weight: 800;
-            color: #1a5276;
-        }
-
-        .result-box .score span {
-            color: #c0392b;
-        }
-
-        .result-box .message {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 12px 0 8px;
-        }
-
-        .result-box .detail {
-            font-size: 14px;
-            color: #2c3e50;
-        }
-
-        .btn-review {
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            margin-top: 12px;
-            transition: 0.2s;
-        }
-
-        .btn-review:hover {
-            background: #1e8449;
-            transform: scale(1.03);
-        }
-
+        .hasil .skor { font-size: 48px; font-weight: 800; color: #1a5276; }
+        .hasil .skor span { color: #c0392b; }
+        .hasil .pesan { font-size: 18px; font-weight: 600; margin: 8px 0; }
         .footer {
             text-align: center;
-            margin-top: 22px;
+            margin-top: 18px;
             font-size: 12px;
             color: #5d6d7e;
-            border-top: 1px solid #d5dbdb;
-            padding-top: 16px;
+            border-top: 1px solid #ddd;
+            padding-top: 14px;
         }
-
         @media (max-width: 600px) {
-            .quiz-container {
-                padding: 16px 14px 24px;
-                border-radius: 18px;
-            }
-            .header h1 {
-                font-size: 21px;
-            }
-            .soal-wrapper {
-                padding: 14px 14px;
-            }
-            .soal-text {
-                font-size: 15px;
-            }
-            .options label {
-                font-size: 14px;
-                padding: 7px 12px;
-            }
-            .progress-stats {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .btn-reset {
-                align-self: flex-end;
-            }
-            .result-box .score {
-                font-size: 38px;
-            }
+            .container { padding: 16px; }
+            .soal { padding: 12px 14px; }
+            .teks { font-size: 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="wave-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
+
+<div class="container" id="app">
+    <h1>⛵ <span>P2TL</span> & Dinas Jaga Kapal</h1>
+    <div class="sub">Peraturan Pencegahan Tubrukan di Laut 1972 • 75 Soal</div>
+
+    <div class="progress">
+        <div class="info">Soal <span id="jawab">0</span> / 75</div>
+        <div class="bar"><div class="bar-fill" id="progress"></div></div>
+        <button class="btn-reset" id="reset">⟲ Ulang</button>
     </div>
 
-    <div class="quiz-container" id="quizContainer">
-        <div class="header">
-            <h1>⛵ <span>P2TL</span> & Dinas Jaga Kapal</h1>
-            <div class="subtitle">Peraturan Pencegahan Tubrukan di Laut 1972</div>
-            <div class="badge">75 Soal Pilihan Ganda</div>
+    <div id="daftar-soal"></div>
+    <button class="btn-submit" id="submit">✅ Periksa Jawaban</button>
+    <div id="hasil"></div>
+    <div class="footer">⚓ Semoga Sukses — Jaga Keselamatan Pelayaran ⚓</div>
+</div>
+
+<script>
+// ============ DATA SOAL (75) ============
+const data = [
+{no:1, s:"Aturan dalam P2TL ada berapa?", o:["35","36","37","38"], j:3},
+{no:2, s:"\"Laju aman\" merupakan aturan ke berapa?", o:["4","5","6","7"], j:2},
+{no:3, s:"Aturan ke-8 P2TL mengatur tentang?", o:["Bahaya tubrukan","Tindakan menghindari tubrukan","Alur pelayaran sempit","Bagan pemisah lalu lintas"], j:1},
+{no:4, s:"Pada Aturan 1, P2TL berlaku untuk semua kapal di?", o:["Laut lepas","Perairan berhubungan dengan laut","Setiap perairan dilayari kapal","Semua benar"], j:3},
+{no:5, s:"Yang diminta pertanggungjawaban pada Aturan 2, kecuali?", o:["Kapal sebagai institusi","Pemilik kapal","Syahbandar","Nakhoda"], j:2},
+{no:6, s:"Yang dimaksud \"awak kapal\" adalah?", o:["Pemilik kapal","Perwira dan ABK","Nakhoda","ABK"], j:1},
+{no:7, s:"Istilah kapal yang digerakkan dengan mesin?", o:["Kapal","Kapal tenaga","Kapal layar","Kapal menangkap ikan"], j:1},
+{no:8, s:"Kapal yang karena sifat pekerjaan terbatas olah geraknya disebut?", o:["Tersekap sarat","Tidak dapat diolah gerak","Terbatas kemampuan olah gerak","Penglihatan terbatas"], j:2},
+{no:9, s:"Kecepatan untuk menghindari tubrukan secara cepat dan efisien disebut?", o:["Kecepatan terkendali","Daya kapal","Laju aman","Sedang berlayar"], j:2},
+{no:10, s:"Faktor dalam laju aman, kecuali?", o:["Angin","Tingkat penglihatan","Kepadatan lalu lintas","Pada malam hari"], j:0},
+{no:11, s:"Berikut terjadi bahaya tubrukan, kecuali?", o:["Keragu-raguan","Mendekati kapal besar","Jarak dekat","Menangkap ikan"], j:3},
+{no:12, s:"Di alur sempit, kapal tidak boleh menghalangi kapal lain dengan panjang kurang dari?", o:["20 m","15 m","10 m","25 m"], j:0},
+{no:13, s:"Penyusulan dari kanan di perairan sempit memberi isyarat?", o:["— — ••","— — •","— — — •","— ••••"], j:1},
+{no:14, s:"Aturan penyusulan dalam P2TL adalah aturan ke?", o:["11","12","13","14"], j:2},
+{no:15, s:"Dua kapal tenaga bertemu berhadapan, masing-masing harus ubah haluan ke kanan. Situasi ini disebut?", o:["Bersilangan","Penyusulan","Menyimpang","Berhadapan"], j:3},
+{no:16, s:"Pengamatan yang baik menggunakan?", o:["Mata dan telinga","Mata, telinga, semua alat navigasi","Radar dan AIS","Teropong dan peta"], j:1},
+{no:17, s:"Dalam kabut, kapal tenaga wajib?", o:["Berhenti & buang sauh","Kecepatan aman & mesin stand by","Mempercepat laju","Sirene terus"], j:1},
+{no:18, s:"Isyarat kabut kapal tenaga berlayar?", o:["1 tiup pendek/2 menit","1 tiup panjang/2 menit","2 tiup panjang/2 menit","1 panjang + 1 pendek"], j:1},
+{no:19, s:"Kapal NUC di kabut memberi isyarat?", o:["-","- -","- . .",". . ."], j:2},
+{no:20, s:"Kapal terbatas olah gerak perlihatkan lampu/sosok?", o:["2 merah/2 bola","2 putih/2 bola","3 merah/3 bola","1 merah + 1 bola"], j:0},
+{no:21, s:"Bahaya tubrukan dianggap ada jika, kecuali?", o:["Baringan tetap","Jarak semakin dekat","Haluan tidak berubah","Ada isyarat suara"], j:3},
+{no:22, s:"Tiga hal pokok Aturan 19?", o:["Saling melihat, kecepatan penuh","Tidak saling melihat, aman, terbatas","Radar, kurangi kecepatan, kabut","Kiri, kurangi, hati-hati"], j:1},
+{no:23, s:"Tindakan susulan Aturan 19?", o:["Ubah ke kanan","Tambah kecepatan","Berlayar hati-hati","Isyarat setiap 1 menit"], j:2},
+{no:24, s:"Dua tiup panjang (- -) pada kabut berarti?", o:["Kapal berlayar","Kapal berhenti & tidak laju","NUC","Berlabuh"], j:1},
+{no:25, s:"Kapal kandas perlihatkan?", o:["1 putih","2 putih/2 bola","2 merah/3 bola","Putih + merah"], j:2},
+{no:26, s:"Jarak tampak lampu buritan kapal ≥50m?", o:["2 mil","3 mil","5 mil","6 mil"], j:1},
+{no:27, s:"Kapal rusak mesin malam hari perlihatkan?", o:["2 merah + lambung & buritan","2 putih","1 putih di tiang","3 merah"], j:0},
+{no:28, s:"Perwira sebagai satu-satunya pengamat jika?", o:["Laut lepas & cerah","Anjungan tidak ditinggalkan & perhatikan cuaca","Tidak ada awak lain","Izin nakhoda"], j:1},
+{no:29, s:"Kapal boleh masuk zona pemisah, kecuali?", o:["Darurat","Menangkap ikan","Berlayar di alur sempit","Pekerjaan bawah air"], j:2},
+{no:30, s:"Perwira pengganti harus tahu, kecuali?", o:["Posisi kapal","Kecepatan yang akan datang","Bahaya navigasi","Cuaca"], j:1},
+{no:31, s:"Ragu-ragu bahaya tubrukan, sikap salah satu kapal?", o:["4 tiupan pendek (....)","Ubah ke kiri","Kurangi kecepatan","VHF"], j:0},
+{no:32, s:"Situasi berhadapan, tindakan masing-masing?", o:["Ubah ke kiri","Ubah ke kanan","Kurangi kecepatan","5 tiupan pendek"], j:1},
+{no:33, s:"Aturan menghindari tubrukan adalah aturan?", o:["6","7","8","9"], j:2},
+{no:34, s:"\"Sedang berlayar\" (underway) berarti?", o:["Pakai mesin","Tidak berlabuh, tidak kandas, tidak terikat","Di laut lepas","Melaju dengan kecepatan"], j:1},
+{no:35, s:"Faktor kecepatan aman Aturan 19?", o:["Penglihatan & kepadatan","Olah gerak & cahaya","Cuaca & sarat","Semua benar"], j:3},
+{no:36, s:"Serah terima jaga ditangguhkan jika?", o:["Pengganti belum tiba","Kapal olah gerak hindari bahaya","Nakhoda di anjungan","Cuaca cerah"], j:1},
+{no:37, s:"Kapal menangkap ikan wajib lampu lambung & buritan, kecuali jika?", o:["Di laut lepas","Berhenti & tidak bergerak","Menarik alat","Siang hari"], j:1},
+{no:38, s:"Isyarat kapal berlayar tapi berhenti di kabut?", o:["1 panjang/2 menit","2 panjang/2 menit","1 panjang + 2 pendek","1 pendek + 1 panjang + 1 pendek"], j:1},
+{no:39, s:"Kapal <12m berlabuh di luar alur sempit perlihatkan?", o:["Putih di depan","Putih depan & buritan","1 putih di tempat terlihat","2 putih"], j:2},
+{no:40, s:"Perwira jaga panggil nakhoda, kecuali?", o:["Jarak tampak turun","Lalu lintas padat","Kapal di alur sempit","Ragu-ragu"], j:2},
+{no:41, s:"Yang dihindari dalam ubah haluan?", o:["Ubah besar & jelas","Ubah sedikit-sedikit","Ubah ke kanan","Ubah + kurangi kecepatan"], j:1},
+{no:42, s:"Jarak tampak lampu tiang kapal ≥50m?", o:["3 mil","5 mil","6 mil","8 mil"], j:2},
+{no:43, s:"Situasi bersilangan, kapal wajib memberi jalan?", o:["Lihat kapal di kanan","Lihat kapal di kiri","Kapal lebih besar","Kapal lebih cepat"], j:0},
+{no:44, s:"Kapal NUC malam hari perlihatkan?", o:["2 merah","2 putih","3 merah","1 merah"], j:0},
+{no:45, s:"Pengamatan baik harus dilakukan terus-menerus dengan?", o:["Mata & telinga","Mata, telinga, semua alat bantu","Radar & AIS","Hanya malam"], j:1},
+{no:46, s:"Sektor lampu buritan?", o:["112.5°","135°","225°","360°"], j:1},
+{no:47, s:"Di kabut, kapal deteksi radar di depan harus?", o:["Ubah ke kiri","Ubah ke kanan","Kurangi & hentikan","Tambah kecepatan"], j:1},
+{no:48, s:"Bukan tugas perwira jaga saat berlabuh?", o:["Tentukan posisi","Periksa rantai","Pastikan pengamatan","Atur kecepatan manuver"], j:3},
+{no:49, s:"Lampu putih depan & buritan berbeda tinggi =?", o:["Berlabuh","Berlayar","NUC","Terbatas"], j:0},
+{no:50, s:"5 tiupan pendek (.....) berarti?", o:["Susul kanan","Susul kiri","Ragu-ragu/tidak mengerti","Balik arah"], j:2},
+{no:51, s:"Faktor harus diperhatikan Aturan 6?", o:["Daya & ukuran","Penglihatan, kepadatan, olah gerak","Muatan & penumpang","Waktu & musim"], j:1},
+{no:52, s:"Sudut lampu keliling?", o:["112.5°","135°","225°","360°"], j:3},
+{no:53, s:"Perwira pengganti pastikan, kecuali?", o:["Posisi","Kecepatan","Rencana rute","Jumlah penumpang"], j:3},
+{no:54, s:"Kapal menderek perlihatkan?", o:["2 putih/belah ketupat","2 merah/2 bola","3 putih/silinder","Putih + merah"], j:0},
+{no:55, s:"Kapal bertahan (stand-on) Aturan 17?", o:["Tetap haluan & kecepatan","Ubah ke kanan","5 tiupan pendek","Tambah kecepatan"], j:0},
+{no:56, s:"Kapal <50m berlabuh perlihatkan?", o:["2 putih","1 putih di depan","1 putih depan & 1 buritan","1 putih di tiang"], j:1},
+{no:57, s:"Isyarat susul dari kiri?", o:["— — •","— — ••","•• — —","• — • —"], j:1},
+{no:58, s:"Pengamat tidak boleh diberi tugas lain karena?", o:["Fokus penuh","Lapor nakhoda","Tanggung jawab mesin","Catat posisi"], j:0},
+{no:59, s:"1 tiup panjang (—) di perairan sempit berarti?", o:["Belok kiri","Belok kanan","Mundur","Berhenti"], j:1},
+{no:60, s:"Faktor kecepatan aman Aturan 6, kecuali?", o:["Sarat & ruang gerak","Cuaca & jarak","Radar & navigasi","Jumlah awak"], j:3},
+{no:61, s:"2 merah bersusun tegak =?", o:["Kapal tenaga","Menangkap ikan","NUC","Terbatas"], j:2},
+{no:62, s:"Sektor lampu lambung kiri (merah)?", o:["112.5° ke kiri","112.5° ke kanan","135° ke kiri","225° ke kiri"], j:0},
+{no:63, s:"Hujan lebat & jarak tampak terbatas, perwira jaga?", o:["Kurangi kecepatan & mesin siaga","Percepat laju","Matikan radar","Berhenti & buang sauh"], j:0},
+{no:64, s:"Tugas pengamat, kecuali?", o:["Perhatian penuh","Tidak diberi tugas lain","Memegang kemudi","Gunakan alat navigasi"], j:2},
+{no:65, s:"Kapal terbatas olah gerak, kecuali?", o:["Mengeruk","Naik/turun pesawat","Menangkap ikan","Pasang rambu"], j:2},
+{no:66, s:"Aturan 19, kapal dengar isyarat kabut di depan?", o:["Tetap haluan","Kurangi kecepatan minimum","Ubah 90° ke kanan","Henti mesin"], j:1},
+{no:67, s:"Kapal berlabuh malam perlihatkan?", o:["Putih di depan","2 putih jika ≥50m","Lambung & buritan","Tiang depan & belakang"], j:1},
+{no:68, s:"Isyarat belok kiri di perairan sempit?", o:["—","— —","•","••"], j:1},
+{no:69, s:"Perwira jaga panggil nakhoda jika?", o:["Ragu-ragu","Masuk pelabuhan","Ganti haluan","Kurangi kecepatan"], j:0},
+{no:70, s:"Kapal ≥50m berlayar malam, kecuali?", o:["Tiang depan","Tiang belakang","Keliling putih","Lambung & buritan"], j:2},
+{no:71, s:"Kapal disusul wajib?", o:["Ubah ke kanan","Tetap haluan & kecepatan","Kurangi kecepatan","5 tiupan pendek"], j:1},
+{no:72, s:"Manfaat pengamatan Aturan 5?", o:["Tahu muatan","Deteksi bahaya tubrukan","Hitung kecepatan","Tentukan posisi GPS"], j:1},
+{no:73, s:"Kapal menderek di kabut isyarat?", o:["1 panjang/2 menit","2 panjang/2 menit","1 panjang + 2 pendek","2 panjang + 1 pendek"], j:3},
+{no:74, s:"Penggunaan radar, kecuali?", o:["Jarak tepat","Ubah skala berkala","Hanya malam hari","Konfirmasi cuaca terang"], j:2},
+{no:75, s:"Kebiasaan pelaut baik, kecuali?", o:["Tidak bahayakan kapal","Tidak alkohol","Selalu radar meski cerah","Kewaspadaan"], j:2}
+];
+
+// ============ STATE ============
+let jawaban = new Array(75).fill(null);
+let terjawab = new Array(75).fill(false);
+let selesai = false;
+
+const container = document.getElementById('daftar-soal');
+const submitBtn = document.getElementById('submit');
+const resetBtn = document.getElementById('reset');
+const hasilDiv = document.getElementById('hasil');
+const jawabSpan = document.getElementById('jawab');
+const progressFill = document.getElementById('progress');
+
+// ============ RENDER ============
+function render() {
+    let html = '';
+    data.forEach((d, i) => {
+        const selected = jawaban[i];
+        const status = terjawab[i] ? (selected === d.j ? 'benar' : 'salah') : '';
+        const ikon = terjawab[i] ? (selected === d.j ? '✅' : '❌') : '⬜';
+        html += `<div class="soal ${status}">`;
+        html += `<div class="no-soal">Soal ${d.no} <span style="float:right">${ikon}</span></div>`;
+        html += `<div class="teks">${d.s}</div>`;
+        html += `<div class="opsi">`;
+        const label = ['a','b','c','d'];
+        d.o.forEach((opt, oi) => {
+            let cls = '';
+            let dis = '';
+            let cek = (selected === oi) ? 'checked' : '';
+            if (terjawab[i]) {
+                dis = 'disabled';
+                if (oi === d.j) cls = 'benar';
+                if (oi === selected && selected !== d.j) cls = 'salah';
+            }
+            html += `<label class="${cls} ${dis}">
+                <input type="radio" name="q${i}" value="${oi}" ${cek} ${dis}>
+                <span><strong>${label[oi]}.</strong> ${opt}</span>
+            </label>`;
+        });
+        html += `</div></div>`;
+    });
+    container.innerHTML = html;
+
+    // Event radio
+    document.querySelectorAll('input[type="radio"]').forEach(r => {
+        r.addEventListener('change', function() {
+            if (selesai) return;
+            const idx = parseInt(this.name.replace('q',''));
+            jawaban[idx] = parseInt(this.value);
+            updateProgress();
+        });
+    });
+
+    updateProgress();
+}
+
+function updateProgress() {
+    let terpilih = jawaban.filter(a => a !== null).length;
+    jawabSpan.textContent = terpilih;
+    progressFill.style.width = (terpilih/75*100) + '%';
+    submitBtn.disabled = selesai || terpilih < 75;
+}
+
+// ============ SUBMIT ============
+function submit() {
+    if (selesai) return;
+    const terpilih = jawaban.filter(a => a !== null).length;
+    if (terpilih < 75) {
+        alert('Silakan jawab semua soal terlebih dahulu!');
+        return;
+    }
+    let benar = 0;
+    for (let i=0; i<75; i++) {
+        terjawab[i] = true;
+        if (jawaban[i] === data[i].j) benar++;
+    }
+    selesai = true;
+    submitBtn.disabled = true;
+    render();
+
+    const pct = Math.round(benar/75*100);
+    let pesan = '';
+    if (pct >= 90) pesan = '🏆 Sangat Memuaskan! Anda Ahli P2TL!';
+    else if (pct >= 75) pesan = '👍 Baik! Terus Tingkatkan.';
+    else if (pct >= 50) pesan = '📖 Perlu Belajar Lebih Giat.';
+    else pesan = '😓 Pelajari Kembali Materi P2TL.';
+
+    hasilDiv.innerHTML = `
+        <div class="hasil">
+            <div class="skor">${benar} <span>/</span> 75</div>
+            <div class="pesan">${pesan}</div>
+            <div style="font-size:14px;color:#2c3e50;">Persentase: ${pct}%</div>
+            <button onclick="reset()" style="margin-top:10px;padding:8px 24px;background:#27ae60;color:white;border:none;border-radius:20px;font-weight:700;cursor:pointer;">🔄 Coba Lagi</button>
         </div>
+    `;
+}
 
-        <div class="progress-stats" id="progressStats">
-            <div class="info" id="progressInfo">Soal <span id="answeredCount">0</span> / 75</div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressFill"></div>
-            </div>
-            <button class="btn-reset" id="resetBtn">⟲ Mulai Ulang</button>
-        </div>
+function reset() {
+    jawaban = new Array(75).fill(null);
+    terjawab = new Array(75).fill(false);
+    selesai = false;
+    hasilDiv.innerHTML = '';
+    submitBtn.disabled = true;
+    render();
+    document.querySelector('.container').scrollTop = 0;
+}
 
-        <div id="soalContainer"></div>
-        <button class="btn-submit" id="submitBtn">✅ Periksa Jawaban</button>
-        <div id="resultArea"></div>
+submitBtn.addEventListener('click', submit);
+resetBtn.addEventListener('click', reset);
 
-        <div class="footer">
-            <i>⚓ Semoga Sukses &mdash; Jaga Keselamatan Pelayaran ⚓</i>
-        </div>
-    </div>
+render();
+</script>
 
-    <script>
-        const soalData = [
-            { no: 1, soal: "Aturan dalam P2TL (Peraturan Pencegahan Tubrukan di Laut) ada berapa?", options: ["35", "36", "37", "38"], jawaban: 3 },
-            { no: 2, soal: "\"Laju aman\" merupakan aturan yang ke berapa dalam P2TL?", options: ["4", "5", "6", "7"], jawaban: 2 },
-            { no: 3, soal: "Aturan ke-8 dalam P2TL mengatur tentang...", options: ["Bahaya tubrukan", "Tindakan untuk menghindari tubrukan", "Alur pelayaran sempit", "Bagan pemisah lalu lintas"], jawaban: 1 },
-            { no: 4, soal: "Pada Aturan 1, P2TL berlaku untuk semua kapal di...", options: ["Laut lepas", "Perairan yang ada hubungannya dengan laut", "Setiap perairan yang dapat dilayari kapal", "Semua jawaban benar"], jawaban: 3 },
-            { no: 5, soal: "Yang diminta pertanggungjawaban pada Aturan 2, kecuali...", options: ["Kapal sebagai institusi", "Pemilik kapal", "Syahbandar", "Nakhoda"], jawaban: 2 },
-            { no: 6, soal: "Yang dimaksud dengan \"awak kapal\" adalah...", options: ["Pemilik kapal", "Perwira dan Anak Buah Kapal (ABK)", "Nakhoda", "ABK"], jawaban: 1 },
-            { no: 7, soal: "Pada Aturan 3, istilah untuk kapal yang digerakkan dengan mesin adalah...", options: ["Kapal", "Kapal tenaga", "Kapal layar", "Kapal yang menangkap ikan"], jawaban: 1 },
-            { no: 8, soal: "Kapal yang karena sifat pekerjaannya mengakibatkan terbatasnya kemampuan olah gerak dan tidak mampu menyimpang dari kapal lain disebut...", options: ["Kapal yang terkejang oleh saratnya", "Kapal tidak dapat diolah gerak", "Kapal yang terbatas kemampuan olah geraknya", "Penglihatan terbatas"], jawaban: 2 },
-            { no: 9, soal: "Kecepatan terkendali kapal sehingga dapat menghindari bahaya tubrukan secara cepat, tepat, dan efisien merupakan istilah dari...", options: ["Kecepatan terkendali", "Daya kapal", "Laju aman", "Sedang berlayar"], jawaban: 2 },
-            { no: 10, soal: "Berikut adalah faktor yang harus diperhatikan dalam laju aman, kecuali...", options: ["Angin", "Tingkat penglihatan", "Kepadatan lalu lintas", "Pada malam hari"], jawaban: 0 },
-            { no: 11, soal: "Berikut adalah situasi yang dianggap terjadi bahaya tubrukan, kecuali...", options: ["Timbul keragu-raguan", "Mendekati kapal besar", "Mendekati kapal dengan jarak dekat", "Menangkap ikan"], jawaban: 3 },
-            { no: 12, soal: "Dalam alur sempit, kapal tidak boleh menghalang-halangi jalannya kapal lain dengan panjang kurang dari...", options: ["20 meter", "15 meter", "10 meter", "25 meter"], jawaban: 0 },
-            { no: 13, soal: "Pada perairan sempit, jika ingin melakukan penyusulan dari kanan, isyarat yang diberikan adalah...", options: ["— — ••", "— — •", "— — — •", "— ••••"], jawaban: 1 },
-            { no: 14, soal: "Aturan tentang penyusulan dalam P2TL adalah aturan yang ke...", options: ["Aturan 11", "Aturan 12", "Aturan 13", "Aturan 14"], jawaban: 2 },
-            { no: 15, soal: "Dua kapal tenaga bertemu dengan haluan berhadapan atau hampir berhadapan sehingga mengakibatkan bahaya tubrukan, masing-masing harus merubah haluan ke kanan. Situasi ini disebut...", options: ["Situasi bersilangan", "Situasi penyusulan", "Situasi tindakan yang menyimpang", "Situasi berhadapan"], jawaban: 3 },
-            { no: 16, soal: "Berdasarkan Aturan 5 P2TL 1972, pengamatan yang baik dilakukan dengan menggunakan...", options: ["Mata dan telinga saja", "Mata, telinga, dan semua alat navigasi yang tersedia", "Radar dan AIS saja", "Teropong dan peta laut"], jawaban: 1 },
-            { no: 17, soal: "Dalam keadaan kabut atau hujan, sebuah kapal tenaga wajib untuk...", options: ["Berhenti dan membuang sauh", "Berlayar dengan kecepatan aman dan mesin stand by untuk manuver", "Mempercepat laju untuk segera keluar dari kabut", "Membunyikan sirene terus menerus"], jawaban: 1 },
-            { no: 18, soal: "Isyarat kabut untuk kapal tenaga yang sedang berlayar adalah...", options: ["Satu tiup pendek setiap 2 menit", "Satu tiup panjang setiap interval tidak lebih dari 2 menit", "Dua tiup panjang setiap 2 menit", "Satu tiup panjang diikuti satu tiup pendek"], jawaban: 1 },
-            { no: 19, soal: "Kapal yang tidak dapat diolah gerak (NUC) pada saat kabut harus membunyikan isyarat...", options: ["Satu tiup panjang (-)", "Dua tiup panjang ( - - )", "Satu tiup panjang diikuti dua tiup pendek ( - . . )", "Tiga tiup pendek ( . . . )"], jawaban: 2 },
-            { no: 20, soal: "Kapal yang terbatas kemampuan olah geraknya harus memperlihatkan lampu atau sosok benda berupa...", options: ["Dua lampu keliling merah atau dua bola bersusun tegak", "Dua lampu keliling putih atau dua bola bersusun tegak", "Tiga lampu keliling merah atau tiga bola bersusun tegak", "Satu lampu keliling merah dan satu bola"], jawaban: 0 },
-            { no: 21, soal: "Bahaya tubrukan dianggap ada jika, kecuali...", options: ["Sudut baringan tidak berubah", "Jarak semakin dekat", "Tidak menunjukkan perubahan haluan yang berarti", "Terdengar isyarat suara dari kapal lain"], jawaban: 3 },
-            { no: 22, soal: "Menurut Aturan 19 P2TL, tiga hal pokok yang harus diperhatikan dalam penglihatan terbatas adalah...", options: ["Sikap kapal yang saling melihat, kecepatan penuh, dan jarak pandang", "Sikap kapal yang tidak saling melihat, kecepatan aman, dan penglihatan terbatas", "Menggunakan radar, mengurangi kecepatan, dan membunyikan isyarat kabut", "Merubah haluan ke kiri, mengurangi kecepatan, dan berlayar hati-hati"], jawaban: 1 },
-            { no: 23, soal: "Tindakan susulan yang harus dilakukan dalam penglihatan terbatas (Aturan 19), adalah...", options: ["Merubah haluan ke kanan untuk semua kapal", "Menambah kecepatan untuk menghindari tubrukan", "Berlayar dengan hati-hati hingga bahaya tubrukan berlalu", "Membunyikan isyarat bahaya setiap 1 menit"], jawaban: 2 },
-            { no: 24, soal: "Isyarat bunyi dua tiup panjang ( - - ) pada saat penglihatan terbatas berarti...", options: ["Kapal tenaga sedang berlayar", "Kapal tenaga sedang berhenti dan tidak memiliki laju terhadap air", "Kapal tidak terkendalikan", "Kapal sedang berlabuh jangkar"], jawaban: 1 },
-            { no: 25, soal: "Penerangan yang harus diperlihatkan oleh kapal yang kandas adalah...", options: ["Satu lampu keliling putih", "Dua lampu keliling putih bersusun tegak atau dua bola", "Dua lampu keliling merah bersusun tegak atau tiga bola", "Lampu keliling putih dan lampu keliling merah"], jawaban: 2 },
-            { no: 26, soal: "Pada kapal tenaga dengan panjang 50 meter atau lebih, jarak tampak untuk lampu buritan adalah...", options: ["2 mil", "3 mil", "5 mil", "6 mil"], jawaban: 1 },
-            { no: 27, soal: "Jika kapal anda mengalami kerusakan mesin pada malam hari, penerangan yang harus ditunjukkan adalah...", options: ["Dua lampu keliling merah bersusun tegak, ditambah lampu lambung dan buritan", "Dua lampu keliling putih bersusun tegak", "Satu lampu keliling putih di tiang depan", "Tiga lampu keliling merah bersusun tegak"], jawaban: 0 },
-            { no: 28, soal: "Seorang perwira jaga navigasi dapat dibenarkan sebagai satu-satunya pengamat di anjungan jika...", options: ["Kapal berada di laut lepas dan cuaca cerah", "Anjungan tidak boleh ditinggalkan dan memperhatikan kondisi cuaca, jarak tampak, serta bahaya navigasi", "Tidak ada awak lain yang bisa menjadi pengamat", "Nakhoda memberikan izin tertulis"], jawaban: 1 },
-            { no: 29, soal: "Kapal yang boleh memasuki zona pemisah lalu lintas adalah, kecuali...", options: ["Kapal dalam keadaan darurat untuk menghindari bahaya tubrukan", "Kapal yang menangkap ikan di dalam daerah pemisah", "Kapal yang berlayar di alur pelayaran sempit", "Kapal yang sedang melakukan pekerjaan di bawah air"], jawaban: 2 },
-            { no: 30, soal: "Perwira jaga pengganti harus mengetahui hal-hal berikut sebelum menerima tugas jaga, kecuali...", options: ["Posisi sebenarnya atau posisi duga kapal", "Kecepatan kapal yang akan datang", "Semua kemungkinan bahaya navigasi", "Kondisi cuaca dan jarak tampak"], jawaban: 1 },
-            { no: 31, soal: "Jika anda ragu-ragu ada tidaknya bahaya tubrukan, sikap yang harus diambil oleh salah satu kapal adalah...", options: ["Memberikan isyarat bunyi 4 kali tiupan pendek ( . . . . )", "Merubah haluan ke kiri", "Mengurangi kecepatan", "Menghubungi kapal lain melalui VHF"], jawaban: 0 },
-            { no: 32, soal: "Dalam situasi berhadapan, tindakan yang harus dilakukan oleh masing-masing kapal tenaga adalah...", options: ["Merubah haluan ke kiri", "Merubah haluan ke kanan", "Mengurangi kecepatan", "Memberi isyarat 5 kali tiupan pendek"], jawaban: 1 },
-            { no: 33, soal: "Aturan yang mengatur tentang tindakan untuk menghindari tubrukan adalah Aturan nomor...", options: ["6", "7", "8", "9"], jawaban: 2 },
-            { no: 34, soal: "Istilah \"sedang berlayar\" (underway) menurut P2TL berarti...", options: ["Kapal sedang menggunakan mesin utama", "Kapal tidak berlabuh jangkar, tidak kandas, dan tidak terikat ke darat", "Kapal sedang berlayar di laut lepas", "Kapal sedang melaju dengan kecepatan tertentu"], jawaban: 1 },
-            { no: 35, soal: "Faktor yang harus dipertimbangkan dalam melaksanakan kecepatan aman pada penglihatan terbatas (Aturan 19) adalah...", options: ["Tingkat penglihatan dan kepadatan lalu lintas", "Kemampuan olah gerak dan latar belakang cahaya", "Keadaan cuaca dan sarat kapal", "Semua jawaban benar"], jawaban: 3 },
-            { no: 36, soal: "Serah terima tugas jaga dapat ditangguhkan jika...", options: ["Perwira pengganti belum tiba di anjungan", "Kapal sedang melakukan olah gerak atau tindakan untuk menghindari bahaya yang mengancam", "Nakhoda sedang berada di anjungan", "Cuaca sedang cerah dan jarak tampak baik"], jawaban: 1 },
-            { no: 37, soal: "Kapal yang sedang menangkap ikan, pada saat berlayar, wajib memperlihatkan lampu lambung dan buritan, KECUALI jika...", options: ["Sedang berlayar di laut lepas", "Sedang berhenti dan tidak bergerak", "Sedang menarik alat tangkapnya", "Sedang berlayar pada siang hari"], jawaban: 1 },
-            { no: 38, soal: "Isyarat bunyi untuk kapal yang sedang berlayar tetapi berhenti (tidak memiliki laju terhadap air) pada saat penglihatan terbatas adalah...", options: ["Satu tiup panjang setiap 2 menit", "Dua tiup panjang dengan selang waktu tidak lebih dari 2 menit", "Satu tiup panjang diikuti dua tiup pendek", "Satu tiup pendek, satu tiup panjang, satu tiup pendek"], jawaban: 1 },
-            { no: 39, soal: "Kapal dengan panjang kurang dari 12 meter, pada saat berlabuh jangkar di luar alur pelayaran sempit, WAJIB memperlihatkan...", options: ["Lampu keliling putih di bagian depan", "Lampu keliling putih di bagian depan dan buritan", "Satu lampu keliling putih di tempat yang dapat terlihat", "Dua lampu keliling putih bersusun tegak"], jawaban: 2 },
-            { no: 40, soal: "Perwira jaga navigasi WAJIB segera memanggil Nakhoda jika terjadi hal-hal berikut, KECUALI...", options: ["Jarak tampak menurun drastis", "Lalu lintas menjadi padat dan membahayakan", "Kapal berada di alur pelayaran sempit", "Ada keraguan dalam mengambil tindakan untuk menghindari tubrukan"], jawaban: 2 },
-            { no: 41, soal: "Tindakan yang HARUS dihindari dalam merubah haluan untuk menghindari tubrukan adalah...", options: ["Merubah haluan secara besar dan jelas", "Merubah haluan sedikit demi sedikit (kecil)", "Merubah haluan ke kanan untuk kapal yang bertemu berhadapan", "Merubah haluan bersamaan dengan pengurangan kecepatan"], jawaban: 1 },
-            { no: 42, soal: "Pada kapal tenaga dengan panjang 50 meter atau lebih, lampu tiang depan dan belakang harus memiliki jarak tampak minimal...", options: ["3 mil", "5 mil", "6 mil", "8 mil"], jawaban: 2 },
-            { no: 43, soal: "Jika dua kapal tenaga saling mendekati dan terjadi situasi bersilangan, maka kapal yang WAJIB memberi jalan adalah...", options: ["Kapal yang melihat kapal lain di sisi kanannya", "Kapal yang melihat kapal lain di sisi kirinya", "Kapal yang lebih besar", "Kapal yang berlayar lebih cepat"], jawaban: 0 },
-            { no: 44, soal: "Kapal yang tidak dapat diolah gerak (Not Under Command / NUC) pada malam hari harus memperlihatkan...", options: ["Dua lampu keliling merah bersusun tegak", "Dua lampu keliling putih bersusun tegak", "Tiga lampu keliling merah bersusun tegak", "Satu lampu keliling merah"], jawaban: 0 },
-            { no: 45, soal: "Menurut Aturan 5 (Pengamatan), pengamatan yang baik harus dilakukan secara terus-menerus dengan menggunakan...", options: ["Mata dan telinga", "Mata, telinga, dan semua alat bantu navigasi yang tersedia", "Radar dan AIS saja", "Hanya pada malam hari"], jawaban: 1 },
-            { no: 46, soal: "Lampu buritan sebuah kapal harus bersinar sektor...", options: ["112.5°", "135°", "225°", "360°"], jawaban: 1 },
-            { no: 47, soal: "Dalam keadaan penglihatan terbatas, kapal yang mendeteksi kapal lain di depan dengan radar WAJIB...", options: ["Merubah haluan ke kiri jika kapal di depan berada tepat di depan", "Merubah haluan ke kanan jika kapal di depan berada tepat di depan", "Mengurangi kecepatan dan menghentikan mesin", "Menambah kecepatan untuk segera menjauh"], jawaban: 1 },
-            { no: 48, soal: "Yang BUKAN merupakan tugas perwira jaga saat kapal berlabuh jangkar adalah...", options: ["Menentukan dan menggambar posisi di peta", "Memeriksa rantai jangkar secara berkala", "Memastikan pengamatan yang baik terus dilakukan", "Mengatur kecepatan mesin untuk manuver"], jawaban: 3 },
-            { no: 49, soal: "Jika kapal anda melihat lampu keliling putih di depan dan lampu keliling putih lainnya di buritan dengan ketinggian berbeda, kapal tersebut sedang...", options: ["Berlabuh jangkar", "Berlayar dengan mesin", "Tidak dapat diolah gerak (NUC)", "Terbatas kemampuan olah geraknya"], jawaban: 0 },
-            { no: 50, soal: "Isyarat bahaya yang terdiri dari 5 tiupan pendek ( . . . . . ) menandakan bahwa kapal...", options: ["Akan menyusul dari kanan", "Akan menyusul dari kiri", "Ragu-ragu atau tidak mengerti tindakan kapal lain", "Akan berbalik arah"], jawaban: 2 },
-            { no: 51, soal: "Menurut Aturan 6 (Laju Aman), faktor yang HARUS dipertimbangkan oleh semua kapal adalah...", options: ["Daya mesin dan ukuran kapal", "Tingkat penglihatan, kepadatan lalu lintas, dan kemampuan olah gerak", "Jenis muatan dan jumlah penumpang", "Waktu dan musim pelayaran"], jawaban: 1 },
-            { no: 52, soal: "Lampu keliling (all-round light) memiliki sudut pancaran sebesar...", options: ["112.5°", "135
+</body>
+</html>
